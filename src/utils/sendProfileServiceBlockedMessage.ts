@@ -11,7 +11,9 @@ export const generateStringToBeSent = (
     userId ? "Your" : "Someone's"
   } Profile Service is **BLOCKED** because of the below-mentioned reason.${
     userId
-      ? ` Please visit the [MAIN SITE](https://www.realdevsquad.com/identity) to fix this.\nIf you have any issue related to profile service, you can tag <@&${helpGroupRoleId}> and ask for help.`
+      ? ` Please visit the [MAIN SITE](${
+          config(env).VERIFICATION_SITE_URL
+        }/identity) to fix this.\nIf you have any issue related to profile service, you can tag <@&${helpGroupRoleId}> and ask for help.`
       : ""
   }\n\n**Reason:** \`${reason ? reason : "No reason provided"}\``;
 };

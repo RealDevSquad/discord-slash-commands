@@ -134,7 +134,7 @@ Now, go to [Discord Developer Portal](https://discord.com/developers/application
 
 To check this, try running '/verify' command in your discord
 
-If you want to add discordId to your user data then run (website-www)[https://github.com/Real-Dev-Squad/website-www] along with it to access the link after `/verify` command
+If you want to add discordId to your user data then run [website-www](https://github.com/Real-Dev-Squad/website-www) along with it to access the link after `/verify` command
 
 (Note:`if it doesn't run , try running the command almost three to four times.`)
 
