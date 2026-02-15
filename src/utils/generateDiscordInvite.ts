@@ -1,4 +1,4 @@
-import { STAGING_DISCORD_ROLE_IDS } from "../constants/discordRoles";
+import config from "../../config/config";
 import { INVITE_OPTIONS } from "../constants/inviteOptions";
 import {
   BAD_REQUEST,
@@ -21,12 +21,9 @@ export async function generateDiscordLink(
 ) {
   let roleIds: string[];
   try {
+    const roleIdsConfig = config(env).DISCORD_ROLE_IDS;
     const applicationRoleId = getInviteRoleId(body.role, env);
-    roleIds = [
-      applicationRoleId,
-      STAGING_DISCORD_ROLE_IDS.UNVERIFIED,
-      STAGING_DISCORD_ROLE_IDS.NEW,
-    ];
+    roleIds = [applicationRoleId, roleIdsConfig.UNVERIFIED, roleIdsConfig.NEW];
   } catch {
     return BAD_REQUEST;
   }

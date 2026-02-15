@@ -1,23 +1,12 @@
-import {
-  PRODUCTION_APPLICATION_ROLE_TO_DISCORD_ID,
-  STAGING_APPLICATION_ROLE_TO_DISCORD_ID,
-} from "../constants/discordRoles";
+import config from "../../config/config";
 import type { env } from "../typeDefinitions/default.types";
 
 export function getInviteRoleId(role: string, env: env): string {
-  const normalizedRole = role?.toLowerCase().trim();
-  if (!normalizedRole) {
-    throw new Error("Role is required");
-  }
+  const normalizedRole = role?.trim().toUpperCase();
+  if (!normalizedRole) throw new Error("Role is required");
 
-  const isProduction = env.CURRENT_ENVIRONMENT === "production";
-  const applicationRoleToDiscordId = isProduction
-    ? PRODUCTION_APPLICATION_ROLE_TO_DISCORD_ID
-    : STAGING_APPLICATION_ROLE_TO_DISCORD_ID;
+  const roleIds = config(env).DISCORD_ROLE_IDS[normalizedRole];
+  if (!roleIds) throw new Error(`Invalid role: ${role}`);
 
-  const roleId = applicationRoleToDiscordId[normalizedRole];
-  if (!roleId) {
-    throw new Error(`Invalid role: ${role}`);
-  }
-  return roleId;
+  return roleIds;
 }

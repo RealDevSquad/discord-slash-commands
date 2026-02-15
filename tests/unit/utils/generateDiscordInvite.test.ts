@@ -1,4 +1,4 @@
-import { STAGING_DISCORD_ROLE_IDS } from "../../../src/constants/discordRoles";
+import { DISCORD_ROLE_IDS } from "../../../src/constants/discordRoles";
 import { INVITE_OPTIONS } from "../../../src/constants/inviteOptions";
 import * as response from "../../../src/constants/responses";
 import JSONResponse from "../../../src/utils/JsonResponse";
@@ -6,9 +6,9 @@ import { generateDiscordLink } from "../../../src/utils/generateDiscordInvite";
 import { dummyInviteBody, guildEnv } from "../../fixtures/fixture";
 
 const defaultRoleIds = [
-  STAGING_DISCORD_ROLE_IDS.DEVELOPER,
-  STAGING_DISCORD_ROLE_IDS.UNVERIFIED,
-  STAGING_DISCORD_ROLE_IDS.NEW,
+  DISCORD_ROLE_IDS.DEVELOPMENT.DEVELOPER,
+  DISCORD_ROLE_IDS.DEVELOPMENT.UNVERIFIED,
+  DISCORD_ROLE_IDS.DEVELOPMENT.NEW,
 ];
 
 describe("generate invite link", () => {
@@ -112,9 +112,9 @@ describe("generate invite link", () => {
           max_uses: INVITE_OPTIONS.MAX_USE,
           unique: INVITE_OPTIONS.UNIQUE,
           role_ids: [
-            STAGING_DISCORD_ROLE_IDS.DEVELOPER,
-            STAGING_DISCORD_ROLE_IDS.UNVERIFIED,
-            STAGING_DISCORD_ROLE_IDS.NEW,
+            DISCORD_ROLE_IDS.DEVELOPMENT.DEVELOPER,
+            DISCORD_ROLE_IDS.DEVELOPMENT.UNVERIFIED,
+            DISCORD_ROLE_IDS.DEVELOPMENT.NEW,
           ],
         }),
       }

@@ -1,12 +1,9 @@
-import {
-  PRODUCTION_DISCORD_ROLE_IDS,
-  STAGING_DISCORD_ROLE_IDS,
-} from "../../../src/constants/discordRoles";
+import { DISCORD_ROLE_IDS } from "../../../src/constants/discordRoles";
 import { getInviteRoleId } from "../../../src/utils/getInviteRoleIds";
 
 const APPLICATION_ROLE_KEYS: Record<
   string,
-  keyof typeof STAGING_DISCORD_ROLE_IDS
+  keyof typeof DISCORD_ROLE_IDS.STAGING
 > = {
   developer: "DEVELOPER",
   designer: "DESIGNER",
@@ -48,33 +45,33 @@ describe("getInviteRoleIds", () => {
   describe("when role is valid", () => {
     it("returns staging role ID for valid role in staging env", () => {
       const result = getInviteRoleId("developer", stagingEnv);
-      expect(result).toBe(STAGING_DISCORD_ROLE_IDS.DEVELOPER);
+      expect(result).toBe(DISCORD_ROLE_IDS.STAGING.DEVELOPER);
     });
 
     it("returns production role ID for valid role in production env", () => {
       const result = getInviteRoleId("developer", productionEnv);
-      expect(result).toBe(PRODUCTION_DISCORD_ROLE_IDS.DEVELOPER);
+      expect(result).toBe(DISCORD_ROLE_IDS.PRODUCTION.DEVELOPER);
     });
 
-    it("returns staging role ID when CURRENT_ENVIRONMENT is not production", () => {
+    it("returns development role ID when CURRENT_ENVIRONMENT is default", () => {
       const result = getInviteRoleId("designer", defaultEnv);
-      expect(result).toBe(STAGING_DISCORD_ROLE_IDS.DESIGNER);
+      expect(result).toBe(DISCORD_ROLE_IDS.DEVELOPMENT.DESIGNER);
     });
 
     it("normalizes role to lowercase (case-insensitive)", () => {
       const result = getInviteRoleId("Developer", stagingEnv);
-      expect(result).toBe(STAGING_DISCORD_ROLE_IDS.DEVELOPER);
+      expect(result).toBe(DISCORD_ROLE_IDS.STAGING.DEVELOPER);
     });
 
     it("trims whitespace from role", () => {
       const result = getInviteRoleId("  developer  ", stagingEnv);
-      expect(result).toBe(STAGING_DISCORD_ROLE_IDS.DEVELOPER);
+      expect(result).toBe(DISCORD_ROLE_IDS.STAGING.DEVELOPER);
     });
 
     it("returns correct ID for each of the 6 application roles (staging)", () => {
       for (const [role, key] of Object.entries(APPLICATION_ROLE_KEYS)) {
         const result = getInviteRoleId(role, stagingEnv);
-        expect(result).toBe(STAGING_DISCORD_ROLE_IDS[key]);
+        expect(result).toBe(DISCORD_ROLE_IDS.STAGING[key]);
       }
     });
   });

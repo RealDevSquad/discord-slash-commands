@@ -14,6 +14,7 @@ export interface variables {
   PROFILE_SERVICE_HELP_GROUP_ID: string;
   RDS_STATUS_SITE_URL: string;
   MAIN_SITE_URL: string;
+  DISCORD_ROLE_IDS: typeof DISCORD_ROLE_IDS;
 }
 
 export interface discordCommand {
