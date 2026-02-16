@@ -1,3 +1,4 @@
+import config from "../../config/config";
 import { INVITE_OPTIONS } from "../constants/inviteOptions";
 import {
   BAD_REQUEST,
@@ -11,18 +12,29 @@ import { DISCORD_BASE_URL } from "../constants/urls";
 import { env } from "../typeDefinitions/default.types";
 import { inviteLinkBody } from "../typeDefinitions/discordLink.types";
 import createDiscordHeaders from "./createDiscordHeaders";
+import { getInviteRoleId } from "./getInviteRoleIds";
 
 export async function generateDiscordLink(
   body: inviteLinkBody,
   env: env,
   reason?: string
 ) {
+  let roleIds: string[];
+  try {
+    const roleIdsConfig = config(env).DISCORD_ROLE_IDS;
+    const applicationRoleId = getInviteRoleId(body.role, env);
+    roleIds = [applicationRoleId, roleIdsConfig.UNVERIFIED, roleIdsConfig.NEW];
+  } catch {
+    return BAD_REQUEST;
+  }
+
   const { channelId } = body;
   const generateInviteUrl = `${DISCORD_BASE_URL}/channels/${channelId}/invites`;
 
   const inviteOptions = {
     max_uses: INVITE_OPTIONS.MAX_USE, // Maximum number of times the invite can be used
     unique: INVITE_OPTIONS.UNIQUE, // Whether to create a unique invite or not
+    role_ids: roleIds,
   };
   try {
     const headers: HeadersInit = createDiscordHeaders({

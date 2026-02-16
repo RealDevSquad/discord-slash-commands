@@ -1,5 +1,6 @@
 export interface inviteLinkBody {
   channelId: string;
+  role: string;
 }
 
 export interface inviteResponseType {

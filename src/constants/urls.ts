@@ -6,10 +6,10 @@ export const DISCORD_BASE_URL = "https://discord.com/api/v10";
 export const AWS_IAM_SIGNIN_URL = "https://realdevsquad.awsapps.com/start#/";
 export const DISCORD_AVATAR_BASE_URL = "https://cdn.discordapp.com/avatars";
 
-export const VERIFICATION_SITE_URL = "https://my.realdevsquad.com";
-export const DEVELOPMENT_VERIFICATION_SITE_URL = "http://localhost:3443";
+export const VERIFICATION_SITE_URL = "https://www.realdevsquad.com";
+export const DEVELOPMENT_VERIFICATION_SITE_URL = "http://localhost:4200";
 export const STAGING_VERIFICATION_SITE_URL =
-  "https://staging-my.realdevsquad.com";
+  "https://staging-www.realdevsquad.com";
 
 export const RDS_TRACKING_CHANNEL_URL =
   "https://discord.com/api/v10/channels/1180553802303164526/messages";
