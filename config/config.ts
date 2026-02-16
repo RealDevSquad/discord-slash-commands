@@ -23,6 +23,7 @@ import {
   DISCORD_PROFILE_SERVICE_DEVELOPMENT_HELP_GROUP,
 } from "../src/constants/variables";
 import { config as configFromDotEnv } from "dotenv";
+import { DISCORD_ROLE_IDS } from "../src/constants/discordRoles";
 
 export function loadEnv(env: env, fromWorkerEnv: boolean): env {
   const Env: env = {
@@ -78,6 +79,7 @@ const config = (env: env) => {
       RDS_STATUS_SITE_URL: RDS_STATUS_SITE_URL,
       DASHBOARD_SITE_URL: RDS_DASHBOARD_SITE_URL,
       MAIN_SITE_URL: RDS_MAIN_SITE_URL,
+      DISCORD_ROLE_IDS: DISCORD_ROLE_IDS.PRODUCTION,
     },
     staging: {
       RDS_BASE_API_URL: RDS_BASE_STAGING_API_URL,
@@ -87,6 +89,7 @@ const config = (env: env) => {
       RDS_STATUS_SITE_URL: RDS_STAGING_STATUS_SITE_URL,
       DASHBOARD_SITE_URL: RDS_STAGING_DASHBOARD_SITE_URL,
       MAIN_SITE_URL: RDS_STAGING_MAIN_SITE_URL,
+      DISCORD_ROLE_IDS: DISCORD_ROLE_IDS.STAGING,
     },
     default: {
       RDS_BASE_API_URL: RDS_BASE_DEVELOPMENT_API_URL,
@@ -97,6 +100,7 @@ const config = (env: env) => {
       RDS_STATUS_SITE_URL: RDS_STATUS_SITE_URL,
       DASHBOARD_SITE_URL: RDS_DASHBOARD_SITE_URL,
       MAIN_SITE_URL: RDS_DEVELOPMENT_MAIN_SITE_URL,
+      DISCORD_ROLE_IDS: DISCORD_ROLE_IDS.DEVELOPMENT,
     },
   };
 
