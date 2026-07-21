@@ -1,5 +1,6 @@
 name: Register and deploy Slash Commands
 on:
+  workflow_dispatch:
   push:
     branches: develop
 jobs:
