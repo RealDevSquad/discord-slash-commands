@@ -57,8 +57,6 @@ router.patch("/guild/member", changeNickname);
 router.put("/roles/create", createGuildRoleHandler);
 router.post("/invite", generateInviteLink);
 
-router.put("/roles/add", addGroupRoleHandler);
-
 router.delete("/roles", removeGuildRoleHandler);
 
 router.post("/profile/blocked", sendProfileBlockedMessage);
