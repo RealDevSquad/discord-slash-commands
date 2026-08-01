@@ -25,6 +25,9 @@ export const dummyHelloMessage: discordMessageRequest = {
     joined_at: "2021-07-25T19:25:16.172000+00:00",
   },
   guild_id: 123456,
+
+  guild: undefined,
+
   channel_id: 123456,
 };
 
@@ -43,6 +46,9 @@ export const dummyVerifyMessage: discordMessageRequest = {
     joined_at: "2021-07-25T19:25:16.172000+00:00",
   },
   guild_id: 123456,
+
+  guild: undefined,
+
   channel_id: 123456,
 };
 

@@ -1,4 +1,5 @@
 export interface discordMessageRequest {
+  guild: any;
   type: number;
   data: messageRequestData;
   member: messageRequestMember;

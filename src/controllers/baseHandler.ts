@@ -6,7 +6,7 @@ import { taskCommand } from "./taskCommand";
 import { notifyCommand } from "./notifyCommand";
 import { oooCommand } from "./oooCommand";
 import { userCommand } from "./userCommand";
-
+import { muteUser, unmuteUser } from "../utils/userMuteUnmuteActions";
 import { getCommandName } from "../utils/getCommandName";
 import JSONResponse from "../utils/JsonResponse";
 import { lowerCaseMessageCommands } from "../utils/lowerCaseMessageCommand";
@@ -43,6 +43,14 @@ import {
   REMOVED_LISTENING_MESSAGE,
   RETRY_COMMAND,
 } from "../constants/responses";
+
+import { DISCORD_BASE_URL } from "../constants/urls";
+import {
+  createMutedRole,
+  assignRoleToUser,
+  removeRoleFromUser,
+  getMutedRoleId,
+} from "../utils/discordAPI";
 import { DevFlag } from "../typeDefinitions/filterUsersByRole";
 import { kickEachUser } from "./kickEachUser";
 import { groupInvite } from "./groupInvite";
@@ -82,8 +90,6 @@ export async function baseHandler(
     }
     case getCommandName(MENTION_EACH): {
       const data = message.data?.options as Array<messageRequestDataOptions>;
-      // data[0] is role obj
-      // data[1] is message obj
       const transformedArgument = {
         roleToBeTaggedObj: data[0],
         displayMessageObj: data.find((item) => item.name === "message"),
@@ -93,6 +99,7 @@ export async function baseHandler(
           (item) => item.name === "dev_title"
         ) as unknown as DevFlag,
       };
+      return await mentionEachUser(transformedArgument, env);
       return await mentionEachUser(transformedArgument, env, ctx);
     }
 
@@ -123,52 +130,57 @@ export async function baseHandler(
     case getCommandName(LISTENING): {
       const data = message.data?.options;
       const setter = data ? data[0].value : false;
+      const memberId = message.member.user.id.toString();
       const nickname = removeListening(message.member.nick || "");
       let discordEphemeral;
       let updateNickNameData = "";
       try {
         if (setter) {
-          if (
-            message.member.nick &&
-            !message.member.nick.includes(NICKNAME_SUFFIX)
-          ) {
-            updateNickNameData =
-              NICKNAME_PREFIX + message.member.nick + NICKNAME_SUFFIX;
-            discordEphemeral = LISTENING_SUCCESS_MESSAGE;
-          } else if (!message.member.nick) {
-            (updateNickNameData = NICKNAME_PREFIX + "" + NICKNAME_SUFFIX),
-              (discordEphemeral = LISTENING_SUCCESS_MESSAGE);
-          } else {
-            updateNickNameData = message.member.nick;
-            discordEphemeral = ALREADY_LISTENING;
+          updateNickNameData =
+            NICKNAME_PREFIX + message.member.user.username + NICKNAME_SUFFIX;
+          discordEphemeral = LISTENING_SUCCESS_MESSAGE;
+          const mutedRoleId = await getMutedRoleId(
+            message.guild.id,
+            env.DISCORD_TOKEN
+          );
+          if (!mutedRoleId) {
+            console.error("Muted role not found.");
+            return commandNotFound();
           }
-        } else if (
-          !setter &&
-          !message.member.nick &&
-          message.member.user.username.includes(NICKNAME_SUFFIX)
-        ) {
-          updateNickNameData = message.member.user.username + NICKNAME_SUFFIX;
-
-          discordEphemeral = REMOVED_LISTENING_MESSAGE;
+          await assignRoleToUser(
+            message.guild.id,
+            memberId,
+            mutedRoleId,
+            env.DISCORD_TOKEN
+          );
+          await muteUser(memberId, message.guild.id, env.DISCORD_TOKEN);
         } else {
-          if (message.member.nick?.includes(NICKNAME_SUFFIX)) {
-            updateNickNameData = nickname;
-            discordEphemeral = REMOVED_LISTENING_MESSAGE;
-          } else {
-            updateNickNameData = nickname;
-            discordEphemeral = NOTHING_CHANGED;
+          updateNickNameData = nickname;
+          discordEphemeral = REMOVED_LISTENING_MESSAGE;
+          const mutedRoleId = await getMutedRoleId(
+            message.guild.id,
+            env.DISCORD_TOKEN
+          );
+          if (!mutedRoleId) {
+            console.error("Muted role not found.");
+            return commandNotFound();
           }
+          await removeRoleFromUser(
+            message.guild.id,
+            memberId,
+            mutedRoleId,
+            env.DISCORD_TOKEN
+          );
+          await unmuteUser(memberId, message.guild.id, env.DISCORD_TOKEN);
         }
-        await updateNickName(
-          message.member.user.id.toString(),
-          updateNickNameData,
-          env
-        );
+        await updateNickName(memberId, updateNickNameData, env);
         return discordEphemeralResponse(discordEphemeral);
       } catch (err) {
+        console.error("Error:", err);
         return discordEphemeralResponse(RETRY_COMMAND);
       }
     }
+
     case getCommandName(TASK): {
       const data = message.data?.options as Array<messageRequestDataOptions>;
       return await taskCommand(data[0].value);
@@ -185,7 +197,6 @@ export async function baseHandler(
       const data = message.data?.options as Array<messageRequestDataOptions>;
       return await oooCommand(data[0].value);
     }
-
     case getCommandName(USER): {
       const data = message.data?.options as Array<messageRequestDataOptions>;
       const dev = data.find(
