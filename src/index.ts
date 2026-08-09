@@ -63,7 +63,7 @@ router.delete("/roles", removeGuildRoleHandler);
 
 router.post("/profile/blocked", sendProfileBlockedMessage);
 
-router.post("/task/update", sendTaskUpdatesHandler);
+router.post("/progress", sendTaskUpdatesHandler);
 
 router.get("/ankush", async (request, env, ctx: ExecutionContext) => {
   ctx.waitUntil(send(env));
@@ -102,7 +102,7 @@ export default {
     env: env,
     ctx: ExecutionContext
   ): Promise<Response> {
-    const apiUrls = ["/invite", "/roles", "/profile/blocked", "/task/update"];
+    const apiUrls = ["/invite", "/roles", "/profile/blocked", "/progress"];
     const url = new URL(request.url);
     if (request.method === "POST" && !apiUrls.includes(url.pathname)) {
       const isVerifiedRequest = await verifyBot(request, env);

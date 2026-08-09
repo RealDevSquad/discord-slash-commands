@@ -36,7 +36,7 @@ describe("sendTaskUpdatesHandler", () => {
   });
 
   it("should return Bad Signature object if no auth headers provided", async () => {
-    const mockRequest = generateDummyRequestObject({ url: "/task/update" });
+    const mockRequest = generateDummyRequestObject({ url: "/progress" });
     const result: JSONResponse = await sendTaskUpdatesHandler(
       mockRequest,
       mockEnv
@@ -47,7 +47,7 @@ describe("sendTaskUpdatesHandler", () => {
   });
   it("should return success response if task update is sent successfully", async () => {
     const mockRequest = generateDummyRequestObject({
-      url: "/task/update",
+      url: "/progress",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
