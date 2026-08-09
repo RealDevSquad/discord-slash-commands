@@ -139,3 +139,9 @@ If you want to add discordId to your user data then run [website-www](https://gi
 (Note:`if it doesn't run , try running the command almost three to four times.`)
 
 Now you are ready to contribute to the Repository.
+
+## Feature Flow
+
+<img src="img/discord-slash-command.png" alt="uml-diagram">
+
+Link of UML Diagram: [here](https://lucid.app/lucidchart/5b64b848-dba5-40b9-869f-a2e7b4eeba7a/edit?viewport_loc=-124%2C44%2C2160%2C1259%2C.Q4MUjXso07N&invitationId=inv_5922a67e-af4b-49b9-bc53-5847df4c078a)
