@@ -90,6 +90,11 @@ export interface createNewRole {
   rolename: string;
   mentionable: boolean;
 }
+export interface updateRole {
+  roleid: string;
+  rolename: string;
+  mentionable: boolean;
+}
 export interface memberGroupRole {
   userid: string;
   roleid: string;

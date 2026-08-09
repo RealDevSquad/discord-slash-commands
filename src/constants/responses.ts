@@ -34,6 +34,8 @@ export const NAME_CHANGED = "User nickname changed successfully";
 
 export const ROLE_REMOVED = "Role Removed successfully";
 
+export const ROLE_UPDATED = "Role updated successfully";
+
 export const VERIFICATION_STRING =
   "Please verify your discord account by clicking the link below 👇";
 

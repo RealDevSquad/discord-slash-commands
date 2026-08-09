@@ -24,6 +24,7 @@ import { sendTaskUpdatesHandler } from "./controllers/taskUpdatesHandler";
 
 import config, { loadEnv } from "./../config/config";
 import { deleteGuildRoleHandler } from "./controllers/deleteGuildRoleHandler";
+import { editGuildRoleHandler } from "./controllers/editGuildRolesHandler";
 
 const router = Router();
 
@@ -64,6 +65,8 @@ router.delete("/roles", removeGuildRoleHandler);
 router.post("/profile/blocked", sendProfileBlockedMessage);
 
 router.post("/task/update", sendTaskUpdatesHandler);
+
+router.patch("/roles/:roleId", editGuildRoleHandler);
 
 router.get("/ankush", async (request, env, ctx: ExecutionContext) => {
   ctx.waitUntil(send(env));
